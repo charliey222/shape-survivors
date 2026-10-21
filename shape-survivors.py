@@ -30,6 +30,7 @@ def reset_game():
 
 player_speed = 2
 max_health = 100
+magnet = 35
 
 projectiles = []
 projectile_speed = 6
@@ -42,6 +43,10 @@ enemies = []
 enemy_spawn_interval = max_frame_rate * 4
 spawn_timer = 0
 
+xp_orbs = []
+player_xp = 0
+player_level = 1
+next_level = 50
 
 running = True
 while running:
@@ -122,6 +127,17 @@ while running:
                     projectiles.remove(p)
         #----------------------------------------
     
+        #----------------------------------------XP
+        for orb in xp_orbs[:]:
+            distance_to_player = math.hypot(orb["x"] - player_x, orb["y" - player_y])
+            if distance_to_player < magnet:
+                xp_orbs.remove(orb)
+                player_xp += 10
+                if player_xp >= next_level:
+                    player_xp = 0
+                    player_level += 1
+                    next_level += 5
+
         #----------------------------------------ENEMIES
         spawn_timer += 1
         if spawn_timer >= enemy_spawn_interval:
